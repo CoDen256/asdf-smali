@@ -9,13 +9,19 @@ source "${plugin_dir}/lib/utils.bash"
 
 mkdir -p "$ASDF_DOWNLOAD_PATH"
 
-release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME"
+release_file_smali="$ASDF_DOWNLOAD_PATH/smali"
+release_file_baksmali="$ASDF_DOWNLOAD_PATH/baksmali"
 
 # Download jar file to the download directory
-download_release "$ASDF_INSTALL_VERSION" "$release_file.jar"
+download_release "$ASDF_INSTALL_VERSION" "$release_file_smali.jar" "smali"
+download_release "$ASDF_INSTALL_VERSION" "$release_file_baksmali.jar" "baksmali"
 
 # wow you can add a shebang to jar file
-echo '#!/usr/bin/java -jar' > "$release_file"
-cat "$release_file.jar" >> "$release_file"
+echo '#!/usr/bin/java -jar' > "$release_file_smali"
+cat "$release_file_smali.jar" >> "$release_file_smali"
+chmod +x "$release_file_smali"
 
-chmod +x "$release_file"
+
+echo '#!/usr/bin/java -jar' > "$release_file_baksmali"
+cat "$release_file_baksmali.jar" >> "$release_file_baksmali"
+chmod +x "$release_file_baksmali"

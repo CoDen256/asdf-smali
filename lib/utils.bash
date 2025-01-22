@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-GH_REPO="https://github.com/iBotPeaches/Apktool"
-TOOL_NAME="apktool"
-TOOL_TEST="apktool -h"
+GH_REPO="https://bitbucket.org/JesusFreke/smali"
+TOOL_NAME="smali"
+TOOL_TEST="smali -h"
 
 fail() {
 	echo -e "asdf-$TOOL_NAME: $*"
@@ -12,11 +12,6 @@ fail() {
 }
 
 curl_opts=(-fsSL)
-
-# NOTE: You might want to remove this if apk-editor is not hosted on GitHub releases.
-if [ -n "${GITHUB_API_TOKEN:-}" ]; then
-	curl_opts=("${curl_opts[@]}" -H "Authorization: token $GITHUB_API_TOKEN")
-fi
 
 sort_versions() {
 	sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' |
@@ -37,10 +32,11 @@ download_release() {
 	local version filename url
 	version="$1"
 	filename="$2"
+	tool="$3"
 
-	url="$GH_REPO/releases/download/v${version}/apktool_${version}.jar"
+	url="$GH_REPO/downloads/${tool}-${version}.jar"
 
-	echo "* Downloading $TOOL_NAME release $version..."
+	echo "* Downloading $TOOL_NAME (${tool}) release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
